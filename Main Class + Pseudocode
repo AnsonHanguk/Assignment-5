@@ -1,0 +1,150 @@
+// Anson Project 4 Part 2 (Creating Two Classes for User Information)
+// Auther: Anson
+// Class: CS161 Spring 2025
+// 4/30/2025
+// Java program that uses a main class to retrieve information of the user and a person class which references that information and prints a neat string in the console
+
+
+/*
+ * Pseudocode for both classes
+ * Program Start
+ * 
+ * MAIN CLASS
+ * 
+ * Import tools to calculate birth date and age
+ *  set up first class Main
+ * 
+ * first set up a scanner that allows user to enter their information
+ * 
+ * user enters first name, last name and date of birth
+ * 
+ * the program should make sure they are inputing letters for their name and numbers for their age
+ * 
+ * next the program should calculate age using java.time.Period 
+ * the program should ensure the user enters a birth date which makes them 1-125 years of age
+ * 
+ * all data should be put into their respective variables
+ * 
+ * next I will create a method on the main to reference in the person class
+ * 
+ * PERSON CLASS
+ * 
+ * 
+ * I will reference the variables from the main class and create a constructor 
+ * 
+ * using their entered information the program should output their information neatly in the console. This will happen through the method in the main script.
+
+ */
+
+//Importing tools to allow the program to get date and use it to find age of user
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+//Import scanner to allow the user to input their own information to be used in the person class\
+import java.util.Scanner;
+
+//set up class
+public class Main {
+	public static void main(String[]args) {
+		
+		//Format date and time because I prefer MM-DD-YYYY 
+		//and input scanner
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+Scanner input = new Scanner(System.in);  
+
+
+//Set up/Initialize variables I want within my program for the user's information
+String name;
+String lastname;
+int age = 0;
+LocalDate birthdate = null;
+
+
+
+//Set up first and last name using while true loops to ensure names only use alphabetical characters
+//If they enter a valid name the program will break and move on
+//If non alphabetic characters are used the program will print use only letters and allow the user to resubmit a name
+while(true) {
+System.out.println ("Enter your first name");
+name = input.nextLine();
+
+if (name.matches("[a-zA-Z]+")) {
+	break;
+} else {
+	System.out.println ("Only use leters");
+}
+}
+
+
+while(true) {
+System.out.println ("Enter your last name");
+ lastname = input.nextLine();
+
+if (lastname.matches("[a-zA-Z]+")) {
+	break;
+} else {
+	System.out.println ("Only use leters");
+}
+}
+
+	
+	
+	System.out.println ( "Thank you " + name + " " + lastname + ", now enter your birthday (MM-DD-YYYY)");
+while (true) {
+
+	//The next step is working with birth dates and age
+	
+	//the program asks for age above and now looks for next input in date time format
+String birth = input.nextLine();
+
+//A try block needs to be used to prevent an error in the code
+//If the user enters something not in my date format the program will still run despite any error
+// if the date time information is wrong it will run a catch instead of crashing which says only enter a valid date format
+
+try {
+
+	//this allows the birthdate to interact with the time now, which can also calculate age
+birthdate = LocalDate.parse(birth, formatter);
+LocalDate now = LocalDate.now();
+
+//sets up age with java Period 
+//this line checks the time in years beetween birthdate and my now variable which is the date the user runs the program 
+age = Period.between(birthdate, now).getYears();
+
+//to comply with the assignment this next line of code checks to see if the age variable is between 0-125
+//if it is not it again print enter a valid birthday based on the assignment 
+if (age >= 0 && age <=125) {
+		break;
+	} else {
+		System.out.println ("Only enter a valid birthday (1900-2024)");
+	}
+
+} catch (DateTimeParseException e) {
+	System.out.println ("You are entering an invalid date format. Please use MM-DD-YYYY");
+}
+}
+ 
+// old code to represent result: System.out.println ("Person Created age = " + age);
+
+
+
+
+
+//set up an object, person1 and cary the four variables into the person class to be used later in the program
+
+
+Person person1 = new Person(name, lastname, age, birthdate );
+person1.printInfo();
+
+}
+
+
+
+	}
+
+
+
+///end
+	
